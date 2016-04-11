@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  
+  <form name="upload">
+    <input type="file" name="file">
+    <input type="submit" value="Загрузить">
+  </form>
+
+  <script>
+    document.forms.upload.onsubmit = function() {
+      var file = this.elements.file.files[0];
+
+      if (!file) return false;
+
+      var xhr = new XMLHttpRequest();
+      xhr.onload = xhr.onerror = function() {
+        if (this.status == 200) {
+          alert("success");
+        } else {
+          alert("error " + this.status);
+        }
+      }
+
+      xhr.open("POST", `/${file.name}`, true);
+      xhr.send(file);
+
+      return false;
+    };
+  </script>
+
+</body>
+</html>

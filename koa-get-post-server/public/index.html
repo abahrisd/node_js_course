@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  
+  <form name="upload" enctype="multipart/form-data" methos="POST">
+    <input type="file" name="file">
+    <input type="submit" value="Загрузить">
+  </form>
+
+  <script>
+    document.forms.upload.onsubmit = function() {
+      var file = this.elements.file.files[0];
+//      alert(JSON.stringify(file));
+ //     if (!file) return false;
+
+      var formData = new FormData(document.forms.upload);
+
+      var xhr = new XMLHttpRequest();
+      xhr.onload = xhr.onerror = function() {
+        if (this.status == 200) {
+          alert("success");
+        } else {
+          alert("error " + this.status);
+        }
+      };
+
+      xhr.open("POST", `/${file.name}`, true);
+//      xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);
+
+      xhr.send(formData);
+
+      return false;
+    };
+  </script>
+
+</body>
+</html>

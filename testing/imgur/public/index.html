@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Image uploader</title>
+</head>
+<body>
+
+<form id="uploadForm" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="imageSize">
+  <input required type="file" name="image">
+  <input type="submit" value="Загрузить">
+</form>
+
+<img id="uploadedImage" hidden src="">
+
+<script>
+  'use strict';
+
+  uploadForm.onsubmit = function(event) {
+    event.preventDefault();
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.onload = xhr.onerror = function() {
+
+      if (xhr.status != 201) {
+        let message = "Internal Error";
+        try {
+          message = JSON.parse(xhr.responseText).error;
+        } catch(e) {}
+
+        alert(`Error ${xhr.status}: ${message}`);
+      } else {
+        let link = JSON.parse(xhr.responseText).link;
+        uploadedImage.hidden = false;
+        uploadedImage.src = link;
+      }
+    };
+
+    xhr.open('POST', '/upload');
+
+    let file = uploadForm.image.files[0];
+
+    // multipart does not send the file size for a field,
+    // so we specify it in a separate field before the file
+    uploadForm.elements.imageSize.value = file.size;
+
+    xhr.send(new FormData(uploadForm));
+  };
+
+</script>
+</body>
+</html>
