@@ -10,14 +10,11 @@ const fs = require('fs-extra');
 const path = require('path');
 const config = require('config');
 const Readable = require('stream').Readable;
-
 const host = 'http://127.0.0.1:3000';
-
 const server = require('../server');
 
 // not in config, because many test dirs are possible
 const fixturesRoot = __dirname + '/fixtures';
-
 
 describe("Server", function() {
   before(function(done) {
